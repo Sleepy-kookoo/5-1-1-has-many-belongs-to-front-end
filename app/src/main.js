@@ -1,26 +1,26 @@
 import './style.css'
-import { renderMain, renderBooks, renderAuthor, updateDropDown } from './utils/render-functions.js';
-import { Author } from './models/has-many.js';
+import { renderMain, renderGames, renderPerson, updateDropDown } from './utils/render-functions.js';
+import { Person } from './models/has-many.js';
 
-const handleAuthorSubmit = (e) => {
+const handlePersonSubmit = (e) => {
   e.preventDefault();
   const { name } = Object.fromEntries(new FormData(e.target));
-  const author = new Author(name);
+  const person = new Person(name);
 
-  renderAuthor(author);
+  renderPerson(person);
   updateDropDown();
 
   e.target.reset();
 }
 
-const handleBookSubmit = (e) => {
+const handleGameSubmit = (e) => {
   e.preventDefault();
   const { id, title } = Object.fromEntries(new FormData(e.target));
 
-  const author = Author.findBy(Number(id));
-  author.addBook(title);
+  const person = Person.findBy(Number(id));
+  person.addGame(title);
 
-  renderBooks(document.querySelector(`#author-ul-${id}`), author);
+  renderGames(document.querySelector(`#person-ul-${id}`), person);
 
   e.target.reset();
 }
@@ -28,8 +28,8 @@ const handleBookSubmit = (e) => {
 const main = () => {
   renderMain();
 
-  document.getElementById('author-form').addEventListener('submit', handleAuthorSubmit);
-  document.getElementById('book-form').addEventListener('submit', handleBookSubmit);
+  document.getElementById('people-form').addEventListener('submit', handlePersonSubmit);
+  document.getElementById('game-form').addEventListener('submit', handleGameSubmit);
 }
 
 main();

@@ -1,83 +1,83 @@
-import { Author } from "../models/has-many.js";
+import { Person } from "../models/has-many.js";
 
 export const renderMain = () => {
   const app = document.querySelector('#app');
-  const authorFormSection = document.createElement('section');
-  const bookFormSection = document.createElement('section');
-  const authorListSection = document.createElement('section');
-  app.append(authorFormSection, bookFormSection, authorListSection);
+  const personFormSection = document.createElement('section');
+  const gameFormSection = document.createElement('section');
+  const peopleListSection = document.createElement('section');
+  app.append(personFormSection, gameFormSection, peopleListSection);
 
-  authorFormSection.innerHTML = `
-    <form id="author-form">
-    <h2>Add Author</h2>
-      <label for="author-name">Author Name:</label>
-      <input type="text" name="name" id="author-name" required>
-      <button type="submit">Add Author</button>
+  personFormSection.innerHTML = `
+    <form id="people-form">
+    <h2>Add Person</h2>
+      <label for="person-name">Person Name:</label>
+      <input type="text" name="name" id="person-name" required>
+      <button type="submit">Add Person</button>
     </form>
   `;
 
-  bookFormSection.id = 'bookForm';
-  bookFormSection.innerHTML = `
-    <form id="book-form">
-      <h2>Add Book</h2>
-      <label for="authors-select">Select Author:</label>
-      <select id="authors-select" name="id" required>
-        <!-- Dynamic Author Options Here -->
+  gameFormSection.id = 'gameForm';
+  gameFormSection.innerHTML = `
+    <form id="game-form">
+      <h2>Add Game</h2>
+      <label for="people-select">Select Person:</label>
+      <select id="people-select" name="id" required>
+        <!-- Dynamic people Options Here -->
       </select>
-      <label for="book-title">Book Title:</label>
-      <input type="text" name="title" id="book-title" required>
-      <button type="submit">Add Book</button>
+      <label for="game-title">Game Title:</label>
+      <input type="text" name="title" id="game-title" required>
+      <button type="submit">Add Game</button>
     </form>
   `;
 
-  authorListSection.innerHTML = `
-    <ul id='authors-list'> 
-      <h2>Collection</h2>
+  peopleListSection.innerHTML = `
+    <ul id='people-list'> 
+      <h2>People</h2>
     </ul>
   `
 };
 
-export const renderAuthor = (author) => {
-  const authorElement = document.createElement('li');
-  document.querySelector('#authors-list').append(authorElement);
+export const renderPerson = (person) => {
+  const personElement = document.createElement('li');
+  document.querySelector('#people-list').append(personElement);
 
   const h3 = document.createElement('h3');
   const ul = document.createElement('ul');
-  authorElement.append(h3, ul);
+  personElement.append(h3, ul);
 
-  authorElement.id = `author-num-${author.id}`;
-  h3.textContent = author.name;
-  ul.id = `author-ul-${author.id}`;
+  personElement.id = `person-num-${person.id}`;
+  h3.textContent = person.name;
+  ul.id = `person-ul-${person.id}`;
 
-  renderBooks(ul, author)
+  renderGames(ul, person)
   updateDropDown();
 };
 
 
-export const renderBooks = (booksUl, author) => {
-  const books = author.getBooks();
-  if (books.length === 0) {
-    booksUl.innerHTML = 'No books have been added for this author.';
+export const renderGames = (gamesUl, person) => {
+  const games = person.getGames();
+  if (games.length === 0) {
+    gamesUl.innerHTML = 'No games have been added for this person.';
     return;
   }
 
-  booksUl.innerHTML = '';
-  books.forEach((book) => {
+  gamesUl.innerHTML = '';
+  games.forEach((game) => {
     const li = document.createElement('li');
-    li.textContent = book.title;
-    booksUl.append(li);
+    li.textContent = game.title;
+    gamesUl.append(li);
   });
 };
 
 export const updateDropDown = () => {
-  let authorSelect = document.querySelector('#authors-select')
+  let personSelect = document.querySelector('#people-select')
 
-  authorSelect.innerHTML = '';
+  personSelect.innerHTML = '';
 
-  Author.getAllAuthors().forEach(author => {
+  Person.getAllPeople().forEach(person => {
     const option = document.createElement('option');
-    option.textContent = author.name
-    option.value = author.id;
-    authorSelect.append(option);
+    option.textContent = person.name
+    option.value = person.id;
+    personSelect.append(option);
   });
 }
